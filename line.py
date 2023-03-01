@@ -65,7 +65,7 @@ def handle_message(event):
 
     targets = event.message.text.split(" ")
 
-
+    """
     for target in targets :
         try:
             words = model.wv.most_similar(target, topn=3)
@@ -73,7 +73,22 @@ def handle_message(event):
                 targets.append(word[0])
         except KeyError as e:
             print(e)
+    """
 
+    await_words = []
+    for target in targets :
+        try:
+            words = model.wv.most_similar(target, topn=3)
+            for word in words :
+                await_words.append(word[0])
+        except KeyError as e:
+            print(e)
+    
+    targets = targets + await_words
+
+    targets = list(dict.fromkeys(targets))
+
+    print(targets)
 
     relpy_text = ""
 
